@@ -19,7 +19,7 @@ let Upvote = class Upvote {
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     (0, type_graphql_1.Field)(() => type_graphql_1.ID),
-    __metadata("design:type", Object)
+    __metadata("design:type", Number)
 ], Upvote.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: 0 }),
@@ -27,13 +27,13 @@ __decorate([
     __metadata("design:type", Number)
 ], Upvote.prototype, "upvotes", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => wilders_1.Wilder, "upvotes", { onDelete: "CASCADE" }),
-    (0, type_graphql_1.Field)(() => [wilders_1.Wilder]),
+    (0, typeorm_1.ManyToOne)(() => wilders_1.Wilder, (wilder) => wilder.upvotes, { onDelete: "CASCADE" }),
+    (0, type_graphql_1.Field)(() => wilders_1.Wilder),
     __metadata("design:type", wilders_1.Wilder)
 ], Upvote.prototype, "wilder", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => skills_1.Skill, "upvotes"),
-    (0, type_graphql_1.Field)(() => [skills_1.Skill]),
+    (0, typeorm_1.ManyToOne)(() => skills_1.Skill, (skill) => skill.upvotes, { onDelete: "CASCADE" }),
+    (0, type_graphql_1.Field)(() => skills_1.Skill),
     __metadata("design:type", skills_1.Skill)
 ], Upvote.prototype, "skill", void 0);
 Upvote = __decorate([

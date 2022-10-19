@@ -25,21 +25,19 @@ let UpvoteResolver = class UpvoteResolver {
             .getRepository(Upvote_1.Upvote)
             .findOneBy({ skill: { id: skillId }, wilder: { id: wilderId } });
         if (existingUpvote) {
-            return null;
+            return existingUpvote;
         }
         else {
-            const upvote = await utils_1.default.getRepository(Upvote_1.Upvote).save({
+            return await utils_1.default.getRepository(Upvote_1.Upvote).save({
                 wilder: { id: wilderId },
                 skill: { id: skillId },
             });
-            return upvote;
         }
     }
     async upVote(upvoteId) {
         const existingUpVote = await utils_1.default
             .getRepository(Upvote_1.Upvote)
             .findOneBy({ id: upvoteId });
-        console.log("🚀 ~ file: Upvotes.ts ~ line 30 ~ UpvoteResolver ~ upVote ~ existingUpVote", existingUpVote);
         if (existingUpVote) {
             existingUpVote.upvotes += 1;
         }
@@ -47,7 +45,9 @@ let UpvoteResolver = class UpvoteResolver {
         return existingUpVote;
     }
     async upvotes() {
-        return await utils_1.default.getRepository(Upvote_1.Upvote).find({});
+        const upvoting = await utils_1.default.getRepository(Upvote_1.Upvote).find({});
+        console.log("🚀 ~ file: Upvotes.ts ~ line 44 ~ UpvoteResolver ~ upvotes ~ upvoting", upvoting);
+        return upvoting;
     }
     async upvote(id) {
         return await utils_1.default.getRepository(Upvote_1.Upvote).findOne({ where: { id } });

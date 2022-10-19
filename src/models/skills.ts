@@ -9,11 +9,9 @@ export class Skill {
   @PrimaryGeneratedColumn()
   @Field(() => ID)
   id: number | string;
-
   @Column()
   @Field()
   name: string;
-
   @OneToMany(() => Upvote, "skill")
   @Field(() => [Upvote])
   upvotes: Upvote[];

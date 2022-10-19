@@ -29,11 +29,26 @@ export class WilderResolver {
       .where("id = :id", { id })
       .execute();
   }
-  @Query(() => [Wilder])
-  async wilders(): Promise<Wilder[]> {
+  @Mutation(() => Wilder)
+  async updateWilder(
+    @Arg("id", () => ID) id: number,
+    @Arg("name") name: string,
+    @Arg("city") city: string
+  ) {
     return await dataSource
       .getRepository(Wilder)
+      .createQueryBuilder()
+      .update(Wilder)
+      .set({ name, city })
+      .where("id = :id", { id: id })
+      .execute();
+  }
+  @Query(() => [Wilder])
+  async wilders(): Promise<Wilder[]> {
+    const wwilders = await dataSource
+      .getRepository(Wilder)
       .find({ relations: ["upvotes", "upvotes.skill"] });
+    return wwilders;
   }
   @Query(() => Wilder, { nullable: true })
   async wilder(@Arg("id", () => ID) id: number): Promise<Wilder | null> {

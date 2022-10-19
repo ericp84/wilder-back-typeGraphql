@@ -8,14 +8,17 @@ import { ObjectType, Field, ID } from "type-graphql";
 export class Upvote {
   @PrimaryGeneratedColumn()
   @Field(() => ID)
-  id: number | string;
+  id: number;
+
   @Column({ default: 0 })
   @Field()
   upvotes: number;
-  @ManyToOne(() => Wilder, "upvotes", { onDelete: "CASCADE" })
-  @Field(() => [Wilder])
+
+  @ManyToOne(() => Wilder, (wilder) => wilder.upvotes, { onDelete: "CASCADE" })
+  @Field(() => Wilder)
   wilder: Wilder;
-  @ManyToOne(() => Skill, "upvotes")
-  @Field(() => [Skill])
+
+  @ManyToOne(() => Skill, (skill) => skill.upvotes, { onDelete: "CASCADE" })
+  @Field(() => Skill)
   skill: Skill;
 }

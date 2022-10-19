@@ -39,10 +39,20 @@ let WilderResolver = class WilderResolver {
             .where("id = :id", { id })
             .execute();
     }
-    async wilders() {
+    async updateWilder(id, name, city) {
         return await utils_1.default
             .getRepository(wilders_1.Wilder)
+            .createQueryBuilder()
+            .update(wilders_1.Wilder)
+            .set({ name, city })
+            .where("id = :id", { id: id })
+            .execute();
+    }
+    async wilders() {
+        const wwilders = await utils_1.default
+            .getRepository(wilders_1.Wilder)
             .find({ relations: ["upvotes", "upvotes.skill"] });
+        return wwilders;
     }
     async wilder(id) {
         return await utils_1.default
@@ -71,6 +81,15 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], WilderResolver.prototype, "deleteOneWilder", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => wilders_1.Wilder),
+    __param(0, (0, type_graphql_1.Arg)("id", () => type_graphql_1.ID)),
+    __param(1, (0, type_graphql_1.Arg)("name")),
+    __param(2, (0, type_graphql_1.Arg)("city")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, String, String]),
+    __metadata("design:returntype", Promise)
+], WilderResolver.prototype, "updateWilder", null);
 __decorate([
     (0, type_graphql_1.Query)(() => [wilders_1.Wilder]),
     __metadata("design:type", Function),

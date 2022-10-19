@@ -13,13 +13,12 @@ export class UpvoteResolver {
       .getRepository(Upvote)
       .findOneBy({ skill: { id: skillId }, wilder: { id: wilderId } });
     if (existingUpvote) {
-      return null;
+      return existingUpvote;
     } else {
-      const upvote = await dataSource.getRepository(Upvote).save({
+      return await dataSource.getRepository(Upvote).save({
         wilder: { id: wilderId },
         skill: { id: skillId },
       });
-      return upvote;
     }
   }
   @Mutation(() => Upvote)
@@ -27,10 +26,6 @@ export class UpvoteResolver {
     const existingUpVote = await dataSource
       .getRepository(Upvote)
       .findOneBy({ id: upvoteId });
-    console.log(
-      "🚀 ~ file: Upvotes.ts ~ line 30 ~ UpvoteResolver ~ upVote ~ existingUpVote",
-      existingUpVote
-    );
     if (existingUpVote) {
       existingUpVote.upvotes += 1;
     }
@@ -40,7 +35,12 @@ export class UpvoteResolver {
 
   @Query(() => [Upvote])
   async upvotes(): Promise<Upvote[]> {
-    return await dataSource.getRepository(Upvote).find({});
+    const upvoting = await dataSource.getRepository(Upvote).find({});
+    console.log(
+      "🚀 ~ file: Upvotes.ts ~ line 44 ~ UpvoteResolver ~ upvotes ~ upvoting",
+      upvoting
+    );
+    return upvoting;
   }
   @Query(() => Upvote, { nullable: true })
   async upvote(@Arg("id") id: number): Promise<Upvote | null> {
