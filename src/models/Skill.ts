@@ -7,12 +7,12 @@ import { ObjectType, Field, ID } from "type-graphql";
 @ObjectType()
 export class Skill {
   @PrimaryGeneratedColumn()
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   id: number | string;
   @Column()
-  @Field()
+  @Field({ nullable: true })
   name: string;
   @OneToMany(() => Upvote, "skill")
-  @Field(() => [Upvote])
+  @Field(() => [Upvote], { nullable: true })
   upvotes: Upvote[];
 }

@@ -1,5 +1,5 @@
 import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
-import { Skill } from "../../models/skills";
+import { Skill } from "../../models/Skill";
 import dataSource from "../../utils";
 
 @Resolver()

@@ -6,20 +6,20 @@ import { ObjectType, Field, ID } from "type-graphql";
 @ObjectType()
 export class Wilder {
   @PrimaryGeneratedColumn()
-  @Field(() => ID)
-  id: number | string;
+  @Field(() => ID, { nullable: true })
+  id: number;
 
   @Column()
-  @Field()
+  @Field({ nullable: true })
   name: string;
 
   @Column()
-  @Field()
+  @Field({ nullable: true })
   city: string;
   skills: any;
 
   @OneToMany(() => Upvote, "wilder")
-  @Field(() => [Upvote])
+  @Field(() => [Upvote], { nullable: true })
   upvotes: Upvote[];
 }
 

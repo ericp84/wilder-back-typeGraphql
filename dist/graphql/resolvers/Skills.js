@@ -17,23 +17,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SkillResolver = void 0;
 const type_graphql_1 = require("type-graphql");
-const skills_1 = require("../../models/skills");
+const Skill_1 = require("../../models/Skill");
 const utils_1 = __importDefault(require("../../utils"));
 let SkillResolver = class SkillResolver {
     async createSkill(name) {
-        return await utils_1.default.getRepository(skills_1.Skill).save({ name });
+        return await utils_1.default.getRepository(Skill_1.Skill).save({ name });
     }
     async deleteSkill() {
         return await utils_1.default
-            .getRepository(skills_1.Skill)
+            .getRepository(Skill_1.Skill)
             .createQueryBuilder()
             .delete()
-            .from(skills_1.Skill)
+            .from(Skill_1.Skill)
             .execute();
     }
     async deleteOneSkill(id) {
         return await utils_1.default
-            .getRepository(skills_1.Skill)
+            .getRepository(Skill_1.Skill)
             .createQueryBuilder()
             .delete()
             .where("id = :id", { id })
@@ -41,43 +41,43 @@ let SkillResolver = class SkillResolver {
     }
     async skills() {
         return await utils_1.default
-            .getRepository(skills_1.Skill)
+            .getRepository(Skill_1.Skill)
             .find({ relations: ["upvotes", "upvotes.wilder"] });
     }
     async skill(id) {
         return await utils_1.default
-            .getRepository(skills_1.Skill)
+            .getRepository(Skill_1.Skill)
             .findOne({ where: { id }, relations: ["upvotes", "upvotes.wilder"] });
     }
 };
 __decorate([
-    (0, type_graphql_1.Mutation)(() => skills_1.Skill),
+    (0, type_graphql_1.Mutation)(() => Skill_1.Skill),
     __param(0, (0, type_graphql_1.Arg)("name")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SkillResolver.prototype, "createSkill", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => skills_1.Skill),
+    (0, type_graphql_1.Mutation)(() => Skill_1.Skill),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], SkillResolver.prototype, "deleteSkill", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => skills_1.Skill),
+    (0, type_graphql_1.Mutation)(() => Skill_1.Skill),
     __param(0, (0, type_graphql_1.Arg)("id", () => type_graphql_1.ID)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], SkillResolver.prototype, "deleteOneSkill", null);
 __decorate([
-    (0, type_graphql_1.Query)(() => [skills_1.Skill]),
+    (0, type_graphql_1.Query)(() => [Skill_1.Skill]),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], SkillResolver.prototype, "skills", null);
 __decorate([
-    (0, type_graphql_1.Query)(() => skills_1.Skill, { nullable: true }),
+    (0, type_graphql_1.Query)(() => Skill_1.Skill, { nullable: true }),
     __param(0, (0, type_graphql_1.Arg)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

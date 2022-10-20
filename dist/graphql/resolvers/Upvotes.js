@@ -21,32 +21,40 @@ const Upvote_1 = require("../../models/Upvote");
 const utils_1 = __importDefault(require("../../utils"));
 let UpvoteResolver = class UpvoteResolver {
     async createUpvote(wilderId, skillId) {
-        const existingUpvote = await utils_1.default
-            .getRepository(Upvote_1.Upvote)
-            .findOneBy({ skill: { id: skillId }, wilder: { id: wilderId } });
-        if (existingUpvote) {
-            return existingUpvote;
+        const repository = utils_1.default.getRepository(Upvote_1.Upvote);
+        const exitingUpvote = await repository.findOne({
+            where: {
+                skill: { id: skillId },
+                wilder: { id: wilderId },
+            },
+        });
+        if (exitingUpvote !== null) {
+            return exitingUpvote;
         }
         else {
-            return await utils_1.default.getRepository(Upvote_1.Upvote).save({
+            return await repository.save({
                 wilder: { id: wilderId },
                 skill: { id: skillId },
             });
         }
     }
     async upVote(upvoteId) {
-        const existingUpVote = await utils_1.default
-            .getRepository(Upvote_1.Upvote)
-            .findOneBy({ id: upvoteId });
-        if (existingUpVote) {
-            existingUpVote.upvotes += 1;
+        const repository = utils_1.default.getRepository(Upvote_1.Upvote);
+        const exitingUpvote = await repository.findOne({
+            where: {
+                id: upvoteId,
+            },
+        });
+        if (exitingUpvote !== null) {
+            exitingUpvote.upvotes = exitingUpvote.upvotes + 1;
+            return await repository.save(exitingUpvote);
         }
-        await utils_1.default.getRepository(Upvote_1.Upvote).save(existingUpVote);
-        return existingUpVote;
+        else {
+            return null;
+        }
     }
     async upvotes() {
         const upvoting = await utils_1.default.getRepository(Upvote_1.Upvote).find({});
-        console.log("🚀 ~ file: Upvotes.ts ~ line 44 ~ UpvoteResolver ~ upvotes ~ upvoting", upvoting);
         return upvoting;
     }
     async upvote(id) {

@@ -8,38 +8,48 @@ export class UpvoteResolver {
   async createUpvote(
     @Arg("wilderId", () => ID) wilderId: number,
     @Arg("skillId", () => ID) skillId: number
-  ): Promise<any> {
-    const existingUpvote = await dataSource
-      .getRepository(Upvote)
-      .findOneBy({ skill: { id: skillId }, wilder: { id: wilderId } });
-    if (existingUpvote) {
-      return existingUpvote;
+  ): Promise<Upvote> {
+    const repository = dataSource.getRepository(Upvote);
+
+    const exitingUpvote = await repository.findOne({
+      where: {
+        skill: { id: skillId },
+        wilder: { id: wilderId },
+      },
+    });
+    if (exitingUpvote !== null) {
+      return exitingUpvote;
     } else {
-      return await dataSource.getRepository(Upvote).save({
+      return await repository.save({
         wilder: { id: wilderId },
         skill: { id: skillId },
       });
     }
   }
   @Mutation(() => Upvote)
-  async upVote(@Arg("upvoteId", () => ID) upvoteId: number): Promise<any> {
-    const existingUpVote = await dataSource
-      .getRepository(Upvote)
-      .findOneBy({ id: upvoteId });
-    if (existingUpVote) {
-      existingUpVote.upvotes += 1;
+  async upVote(
+    @Arg("upvoteId", () => ID) upvoteId: number
+  ): Promise<Upvote | null> {
+    const repository = dataSource.getRepository(Upvote);
+
+    const exitingUpvote = await repository.findOne({
+      where: {
+        id: upvoteId,
+      },
+    });
+
+    if (exitingUpvote !== null) {
+      exitingUpvote.upvotes = exitingUpvote.upvotes + 1;
+
+      return await repository.save(exitingUpvote);
+    } else {
+      return null;
     }
-    await dataSource.getRepository(Upvote).save(existingUpVote);
-    return existingUpVote;
   }
 
   @Query(() => [Upvote])
   async upvotes(): Promise<Upvote[]> {
     const upvoting = await dataSource.getRepository(Upvote).find({});
-    console.log(
-      "🚀 ~ file: Upvotes.ts ~ line 44 ~ UpvoteResolver ~ upvotes ~ upvoting",
-      upvoting
-    );
     return upvoting;
   }
   @Query(() => Upvote, { nullable: true })

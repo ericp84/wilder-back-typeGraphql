@@ -1,5 +1,5 @@
 import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
-import { Wilder } from "../../models/wilders";
+import { Wilder } from "../../models/Wilder";
 import dataSource from "../../utils";
 
 @Resolver()
@@ -35,15 +35,22 @@ export class WilderResolver {
     @Arg("name") name: string,
     @Arg("city") city: string
   ) {
-    return await dataSource
+    const wilderToUpdate = await dataSource
       .getRepository(Wilder)
-      .createQueryBuilder()
-      .update(Wilder)
-      .set({ name, city })
-      .where("id = :id", { id: id })
-      .execute();
+      .findOne({ where: { id } });
+
+    if (wilderToUpdate === null) {
+      return null;
+    }
+    if (name !== null) {
+      wilderToUpdate.name = name;
+    }
+    if (city !== null) {
+      wilderToUpdate.city = city;
+    }
+    return await dataSource.getRepository(Wilder).save(wilderToUpdate);
   }
-  @Query(() => [Wilder])
+  @Query(() => [Wilder], { nullable: true })
   async wilders(): Promise<Wilder[]> {
     const wwilders = await dataSource
       .getRepository(Wilder)
