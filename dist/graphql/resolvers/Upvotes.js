@@ -1,95 +1,54 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpvoteResolver = void 0;
-const type_graphql_1 = require("type-graphql");
-const Upvote_1 = require("../../models/Upvote");
-const utils_1 = __importDefault(require("../../utils"));
-let UpvoteResolver = class UpvoteResolver {
-    async createUpvote(wilderId, skillId) {
-        const repository = utils_1.default.getRepository(Upvote_1.Upvote);
-        const exitingUpvote = await repository.findOne({
-            where: {
-                skill: { id: skillId },
-                wilder: { id: wilderId },
-            },
-        });
-        if (exitingUpvote !== null) {
-            return exitingUpvote;
-        }
-        else {
-            return await repository.save({
-                wilder: { id: wilderId },
-                skill: { id: skillId },
-            });
-        }
-    }
-    async upVote(upvoteId) {
-        const repository = utils_1.default.getRepository(Upvote_1.Upvote);
-        const exitingUpvote = await repository.findOne({
-            where: {
-                id: upvoteId,
-            },
-        });
-        if (exitingUpvote !== null) {
-            exitingUpvote.upvotes = exitingUpvote.upvotes + 1;
-            return await repository.save(exitingUpvote);
-        }
-        else {
-            return null;
-        }
-    }
-    async upvotes() {
-        const upvoting = await utils_1.default.getRepository(Upvote_1.Upvote).find({});
-        return upvoting;
-    }
-    async upvote(id) {
-        return await utils_1.default.getRepository(Upvote_1.Upvote).findOne({ where: { id } });
-    }
-};
-__decorate([
-    (0, type_graphql_1.Mutation)(() => Upvote_1.Upvote),
-    __param(0, (0, type_graphql_1.Arg)("wilderId", () => type_graphql_1.ID)),
-    __param(1, (0, type_graphql_1.Arg)("skillId", () => type_graphql_1.ID)),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number]),
-    __metadata("design:returntype", Promise)
-], UpvoteResolver.prototype, "createUpvote", null);
-__decorate([
-    (0, type_graphql_1.Mutation)(() => Upvote_1.Upvote),
-    __param(0, (0, type_graphql_1.Arg)("upvoteId", () => type_graphql_1.ID)),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
-], UpvoteResolver.prototype, "upVote", null);
-__decorate([
-    (0, type_graphql_1.Query)(() => [Upvote_1.Upvote]),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], UpvoteResolver.prototype, "upvotes", null);
-__decorate([
-    (0, type_graphql_1.Query)(() => Upvote_1.Upvote, { nullable: true }),
-    __param(0, (0, type_graphql_1.Arg)("id")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
-], UpvoteResolver.prototype, "upvote", null);
-UpvoteResolver = __decorate([
-    (0, type_graphql_1.Resolver)()
-], UpvoteResolver);
-exports.UpvoteResolver = UpvoteResolver;
+// import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
+// import { Upvote } from "../../models/Upvote";
+// import dataSource from "../../utils";
+// @Resolver()
+// export class UpvoteResolver {
+//   @Mutation(() => Upvote)
+//   async createUpvote(
+//     @Arg("userid", () => ID) userid: number,
+//     @Arg("skillId", () => ID) skillId: number
+//   ): Promise<Upvote> {
+//     const repository = dataSource.getRepository(Upvote);
+//     const exitingUpvote = await repository.findOne({
+//       where: {
+//         skill: { id: skillId },
+//         user: { id: userid },
+//       },
+//     });
+//     if (exitingUpvote !== null) {
+//       return exitingUpvote;
+//     } else {
+//       return await repository.save({
+//         user: { id: userid },
+//         skill: { id: skillId },
+//       });
+//     }
+//   }
+//   @Mutation(() => Upvote)
+//   async upVote(
+//     @Arg("upvoteId", () => ID) upvoteId: number
+//   ): Promise<Upvote | null> {
+//     const repository = dataSource.getRepository(Upvote);
+//     const exitingUpvote = await repository.findOne({
+//       where: {
+//         id: upvoteId,
+//       },
+//     });
+//     if (exitingUpvote !== null) {
+//       exitingUpvote.upvotes = exitingUpvote.upvotes + 1;
+//       return await repository.save(exitingUpvote);
+//     } else {
+//       return null;
+//     }
+//   }
+//   @Query(() => [Upvote])
+//   async upvotes(): Promise<Upvote[]> {
+//     const upvoting = await dataSource.getRepository(Upvote).find({});
+//     return upvoting;
+//   }
+//   @Query(() => Upvote, { nullable: true })
+//   async upvote(@Arg("id") id: number): Promise<Upvote | null> {
+//     return await dataSource.getRepository(Upvote).findOne({ where: { id } });
+//   }
+// }

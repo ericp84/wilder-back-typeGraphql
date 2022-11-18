@@ -1,6 +1,4 @@
-import { Skill } from "./models/Skill";
-import { Upvote } from "./models/Upvote";
-import { Wilder } from "./models/Wilder";
+import { User } from "./models/User";
 import { DataSource } from "typeorm";
 
 const datasource = new DataSource({
@@ -10,8 +8,7 @@ const datasource = new DataSource({
   password: "supersecret",
   database: "postgres",
   synchronize: true,
-  entities: [Wilder, Skill, Upvote],
+  entities: [User],
   logging: ["query", "error"],
 });
-
 export default datasource;

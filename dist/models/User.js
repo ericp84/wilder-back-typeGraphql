@@ -9,25 +9,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Skill = void 0;
+exports.User = void 0;
 const typeorm_1 = require("typeorm");
-// import Upvote from "../controllers/Upvotes";
-// import { Upvote } from "./Upvote";
 const type_graphql_1 = require("type-graphql");
-let Skill = class Skill {
+let User = class User {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     (0, type_graphql_1.Field)(() => type_graphql_1.ID, { nullable: true }),
-    __metadata("design:type", Object)
-], Skill.prototype, "id", void 0);
+    __metadata("design:type", Number)
+], User.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     (0, type_graphql_1.Field)({ nullable: true }),
     __metadata("design:type", String)
-], Skill.prototype, "name", void 0);
-Skill = __decorate([
+], User.prototype, "name", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    (0, type_graphql_1.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    (0, type_graphql_1.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    (0, type_graphql_1.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "city", void 0);
+User = __decorate([
     (0, typeorm_1.Entity)(),
     (0, type_graphql_1.ObjectType)()
-], Skill);
-exports.Skill = Skill;
+], User);
+exports.User = User;

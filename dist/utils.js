@@ -1,14 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Skill_1 = require("./models/Skill");
-const Upvote_1 = require("./models/Upvote");
-const Wilder_1 = require("./models/Wilder");
+const User_1 = require("./models/User");
 const typeorm_1 = require("typeorm");
 const datasource = new typeorm_1.DataSource({
-    type: "sqlite",
-    database: "./wildersdb.sqlite",
+    type: "postgres",
+    host: "db",
+    username: "postgres",
+    password: "supersecret",
+    database: "postgres",
     synchronize: true,
-    entities: [Wilder_1.Wilder, Skill_1.Skill, Upvote_1.Upvote],
+    entities: [User_1.User],
     logging: ["query", "error"],
 });
 exports.default = datasource;
